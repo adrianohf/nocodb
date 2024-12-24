@@ -4810,7 +4810,6 @@ class BaseModelSqlv2 {
   async moveRecord({
     rowId,
     beforeRowId,
-    _cookie,
   }: {
     rowId: string;
     beforeRowId: string;
