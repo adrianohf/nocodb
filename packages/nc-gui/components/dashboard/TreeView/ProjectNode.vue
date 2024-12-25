@@ -19,7 +19,7 @@ const route = router.currentRoute
 
 const { isSharedBase } = storeToRefs(useBase())
 
-const { setMenuContext, openRenameTableDialog, duplicateTable, contextMenuTarget } = inject(TreeViewInj)!
+const { setMenuContext, duplicateTable, contextMenuTarget, tableRenameId } = inject(TreeViewInj)!
 
 const base = inject(ProjectInj)!
 
@@ -1010,7 +1010,7 @@ const showNodeTooltip = ref(true)
             <NcDivider />
             <NcMenuItem
               v-if="isUIAllowed('tableRename', { source: getSource(contextMenuTarget.value?.source_id) })"
-              @click="openRenameTableDialog(contextMenuTarget.value, true)"
+              @click="tableRenameId = `${contextMenuTarget.value?.id}:${contextMenuTarget.value?.source_id}`"
             >
               <div v-e="['c:table:rename']" class="nc-base-option-item flex gap-2 items-center">
                 <GeneralIcon icon="rename" class="text-gray-700" />

@@ -44,11 +44,10 @@ provide(SidebarTableInj, table)
 
 const {
   setMenuContext,
-  openRenameTableDialog: _openRenameTableDialog,
   handleTableRename,
   openTableDescriptionDialog: _openTableDescriptionDialog,
   duplicateTable: _duplicateTable,
-  contextMenuTarget,
+  tableRenameId,
 } = inject(TreeViewInj)!
 
 const { loadViews: _loadViews, navigateToView, duplicateView } = useViewsStore()
@@ -273,7 +272,7 @@ const focusInput = () => {
   })
 }
 
-const openRenameTableDialog = (table: SidebarTableNode, sourceId: string) => {
+const onRenameMenuClick = (table: SidebarTableNode) => {
   if (isMobileMode.value) return
 
   isOptionsOpen.value = false
@@ -286,9 +285,22 @@ const openRenameTableDialog = (table: SidebarTableNode, sourceId: string) => {
       focusInput()
     })
   }
-
-  // _openRenameTableDialog(table, !!sourceId)
 }
+
+watch(
+  tableRenameId,
+  (n, o) => {
+    if (n === o) return
+
+    if (n && `${table.value.id}:${source.value?.id}` === tableRenameId.value) {
+      onRenameMenuClick(table.value)
+    } else {
+      isEditing.value = false
+      onCancel()
+    }
+  },
+  { immediate: true },
+)
 
 const openTableDescriptionDialog = (table: SidebarTableNode) => {
   isOptionsOpen.value = false
@@ -357,6 +369,7 @@ function onStopEdit() {
   isStopped.value = true
   isEditing.value = false
   formState.title = ''
+  tableRenameId.value = ''
 
   setTimeout(() => {
     isStopped.value = false
@@ -608,7 +621,7 @@ async function onRename() {
                     v-if="isUIAllowed('tableRename', { roles: baseRole, source })"
                     :data-testid="`sidebar-table-rename-${table.title}`"
                     class="nc-table-rename"
-                    @click="openRenameTableDialog(table, source.id)"
+                    @click="onRenameMenuClick(table)"
                   >
                     <div v-e="['c:table:rename']" class="flex gap-2 items-center">
                       <GeneralIcon icon="rename" class="text-gray-700" />
