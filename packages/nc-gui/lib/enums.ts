@@ -180,13 +180,6 @@ export enum ExtensionsEvents {
 export enum IntegrationStoreEvents {
   INTEGRATION_ADD = 'integration-add',
 }
-
-export enum IconType {
-  IMAGE = 'IMAGE',
-  EMOJI = 'EMOJI',
-  ICON = 'ICON',
-}
-
 export enum EasterEggs {
   SNOWFLAKE_ENABLED = 'nc-snowfall-enabled',
 }
