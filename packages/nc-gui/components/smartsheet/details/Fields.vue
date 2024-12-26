@@ -219,8 +219,8 @@ const {
   isPredictFromPromptLoading,
   isFormulaPredictionMode,
   onInit,
-  toggleAiMode,
-  disableAiMode,
+  toggleAiMode: _toggleAiMode,
+  disableAiMode: _disableAiMode,
   predictMore,
   predictRefresh,
   predictFromPrompt,
@@ -1221,6 +1221,26 @@ const onToggleTag = (field: PredictedFieldType) => {
 const handleNavigateToIntegrations = () => {
   workspaceStore.navigateToIntegrations(undefined, undefined, {
     categories: 'ai',
+  })
+}
+
+const toggleAiMode = (...args: any[]) => {
+  _toggleAiMode(...args)
+
+  changingField.value = true
+
+  nextTick(() => {
+    changingField.value = false
+  })
+}
+
+const disableAiMode = () => {
+  _disableAiMode()
+
+  changingField.value = true
+
+  nextTick(() => {
+    changingField.value = false
   })
 }
 
